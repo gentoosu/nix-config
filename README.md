@@ -17,7 +17,7 @@ Initial config/test:
 
 Subsequent updates:
 
- > sudo ./result/sw/bin/darwin-rebuild switch --flake /Users/{ username }/git/nix-tutorial/.#
+ > sudo darwin-rebuild switch --flake /Users/{ username }/git/nix-config/.#
 
 Issues I haven't figured out yet:
 
