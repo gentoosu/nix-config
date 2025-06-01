@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, pwnvim, ...}: {
 #Specify home-manager configs
 #DO NOT CHANGE version
 home.stateVersion = "25.05";
