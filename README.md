@@ -2,7 +2,7 @@ Prerequisites:
 
 Install nix:
 
-  > h <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
+  > sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
 
 Install homebrew:
 
@@ -13,8 +13,14 @@ Install homebrew:
 
 Initial config/test:
 
-  nix --extra-experimental-features "nix-command flakes" build .#darwinConfigurations.Mikes-MacBook-Pro.system
+ > nix --extra-experimental-features "nix-command flakes" build .#
 
 Subsequent updates:
 
-  sudo ./result/sw/bin/darwin-rebuild switch --flake /git/nix-tutorial.
+ > sudo ./result/sw/bin/darwin-rebuild switch --flake /Users/{ username }/git/nix-tutorial/.#
+
+Issues I haven't figured out yet:
+
+- Set iTerm2 them
+- Set system default browser
+- Install Brave extensions
