@@ -55,7 +55,7 @@
     "fenix": {
       "inputs": {
         "nixpkgs": [
-          "pwnvm",
+          "pwnvim",
           "nixpkgs"
         ],
         "rust-analyzer-src": "rust-analyzer-src"
@@ -161,7 +161,7 @@
         "type": "github"
       }
     },
-    "pwnvm": {
+    "pwnvim": {
       "inputs": {
         "clipboard-image": "clipboard-image",
         "conform-nvim": "conform-nvim",
@@ -189,7 +189,7 @@
         "darwin": "darwin",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
-        "pwnvm": "pwnvm"
+        "pwnvim": "pwnvim"
       }
     },
     "rust-analyzer-src": {

@@ -23,7 +23,7 @@ home.packages = [
     pkgs.tree
     pkgs.watch
     pkgs.yq
-    inputs.pwnvm.packages."x86_64-darwin".default
+    inputs.pwnvim.packages."x86_64-darwin".default
 ];
 
 home.homeDirectory = "/Users/gentoosu";
