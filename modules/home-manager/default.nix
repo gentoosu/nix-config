@@ -52,13 +52,26 @@ programs.git.enable = true;
 
 programs.zsh = {
     enable = true;
+    history.size  = 999999;
+    history.extended = true;
+    history.ignoreAllDups = true;
     enableCompletion = true;
     oh-my-zsh.enable = true;
     oh-my-zsh.theme = "agnoster";
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     shellAliases = {ls = "ls --color=auto -F";};
-    oh-my-zsh.plugins = ["git" "helm" "kubectl" "kubectx" "sudo" "brew" "common-aliases" "fzf" "vscode"];
+    oh-my-zsh.plugins = [
+        "git" 
+        "helm" 
+        "kubectl" 
+        "kubectx" 
+        "sudo" 
+        "brew" 
+        "common-aliases" 
+        "fzf" 
+        "vscode"
+    ];
 };
 
 #programs.homebrew.iterm2.theme = "Solarized Dark";
