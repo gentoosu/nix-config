@@ -21,6 +21,7 @@ Subsequent updates:
 
 Issues I haven't figured out yet:
 
-- Set iTerm2 them
+- Set iTerm2 theme
 - Set system default browser
-- Install Brave extensions
+- Install Brave/Chrome extensions
+- Pass username as a variable
