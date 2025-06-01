@@ -2,7 +2,7 @@ Prerequisites:
 
 Install nix:
 
-  > h <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
+  > sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
 
 Install homebrew:
 
@@ -13,7 +13,7 @@ Install homebrew:
 
 Initial config/test:
 
-  nix --extra-experimental-features "nix-command flakes" build .#darwinConfigurations.Mikes-MacBook-Pro.system
+ > nix --extra-experimental-features "nix-command flakes" build .#
 
 Subsequent updates:
 
