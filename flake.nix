@@ -30,7 +30,8 @@
           #environment.loginShell = pkgs.zsh;
           environment.systemPackages = [
             pkgs.coreutils
-            pkgs.iterm2
+            pkgs.defaultbrowser
+            #pkgs.iterm2
           ];
           environment.systemPath = ["/opt/homebrew/bin"];
           nix.extraOptions = ''
@@ -52,6 +53,7 @@
           system.primaryUser = "gentoosu";
           system.defaults.finder.AppleShowAllExtensions = true;
           system.defaults.finder._FXShowPosixPathInTitle = true;
+          #system.defaults.defaultbrowser = "brave-browser";
           system.defaults.dock.autohide = false;
           system.defaults.dock.show-recents = false;
           system.defaults.dock.magnification = true;
@@ -77,7 +79,7 @@
             caskArgs.no_quarantine = true;
             global.brewfile = true;
             masApps = {};
-            casks = ["visual-studio-code" "spotify" "slack" "alacritty" "sublime-text" "google-cloud-sdk" "brave-browser"];
+            casks = ["visual-studio-code" "iterm2" "spotify" "slack" "alacritty" "sublime-text" "google-cloud-sdk" "brave-browser"];
             taps = ["fujiapple852/trippy"];
             brews = ["trippy"];
           };
@@ -102,6 +104,7 @@
                   pkgs.ansible
                   pkgs.awscli
                   pkgs.curl
+                  pkgs.google-chrome
                   pkgs.dos2unix
                   pkgs.git
                   pkgs.google-cloud-sdk
@@ -134,6 +137,11 @@
                   EDITOR = "vmim";
                 };
 
+                programs.alacritty = {
+                  enable = true;
+                  theme = "solarized_dark";
+                };
+
                 programs.bat = {
                   enable = true;
                   config.theme = "TwoDark";
@@ -149,6 +157,12 @@
                 programs.zsh = {
                   enable = true;
                   enableCompletion = true;
+                  history.share = true;
+                  history.extended = true;
+                  history.size = 999999;
+                  history.ignoreAllDups = true;
+                  history.path = "$HOME/.zsh_history";
+                  # programs.zsh.oh-my-zsh.extraConfig.
                   oh-my-zsh.enable = true;
                   oh-my-zsh.theme = "agnoster";
                   autosuggestion.enable = true;
@@ -174,6 +188,16 @@
                     redhat.vscode-yaml
                     ms-kubernetes-tools.vscode-kubernetes-tools
                   ];
+                };
+
+                programs.chromium = {
+                  enable = false;
+                  package = pkgs.brave-browser;
+                  extensions = [
+                    {id = "nngceckbapebfimnlniiiahkandclblb";} # ublock origin
+                    # Add other extensions here, using their IDs
+                  ];
+                  # ... other Brave configurations ...
                 };
               })
             ];
