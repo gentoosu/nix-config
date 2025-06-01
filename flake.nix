@@ -15,32 +15,34 @@
     pwnvim.url = "github:zmre/pwnvim";
   };
 
-  outputs = inputs: {
-    darwinConfigurations.Mikes-MacBook-Pro = inputs.darwin.lib.darwinSystem {
-      #system = "x86_64-darwin";
-      pkgs = import inputs.nixpkgs {
-        system = "x86_64-darwin";
-        config.allowUnfree = true;
+  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, ... }: {
+    darwinConfigurations.Mikes-MacBook-Pro = 
+      darwin.lib.darwinSystem {
+        #system = "x86_64-darwin";
+        pkgs = import nixpkgs {
+          system = "x86_64-darwin";
+          config.allowUnfree = true;
+        };
+        modules = [
+          ./modules/darwin
+
+          home-manager.darwinModules.home-manager
+          {
+            users.users.gentoosu = {
+              #name = "Mike";
+              home = "/Users/gentoosu";
+            };
+
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = { inherit pwnvim; };
+              users.gentoosu.imports = [
+                ./modules/home-manager
+              ];
+            };
+          }
+        ];
       };
-      modules = [
-        ./modules/darwin
-
-        inputs.home-manager.darwinModules.home-manager
-        {
-          users.users.gentoosu = {
-            #name = "Mike";
-            home = "/Users/gentoosu";
-          };
-
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            users.gentoosu.imports = [
-              ./modules/home-manager
-            ];
-          };
-        }
-      ];
-    };
   };
 }

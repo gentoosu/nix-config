@@ -9,7 +9,7 @@
     ];
     environment.systemPath = ["/opt/homebrew/bin"];
     nix.extraOptions = ''
-    experimental-features = nix-command flakes
+        experimental-features = nix-command flakes
     '';
 
     system.keyboard = {
@@ -18,7 +18,7 @@
 
     #fonts.fontDir.enable = true;
     fonts.packages = [
-    pkgs.powerline
+        pkgs.powerline
     ];
 
     #services.nix-daemon.enable = true;
