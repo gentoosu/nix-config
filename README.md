@@ -18,3 +18,10 @@ Initial config/test:
 Subsequent updates:
 
  > sudo ./result/sw/bin/darwin-rebuild switch --flake /Users/{ username }/git/nix-tutorial/.#
+
+Issues I haven't figured out yet:
+
+- Set iTerm2 theme
+- Set system default browser
+- Install Brave/Chrome extensions
+- Pass username as a variable
