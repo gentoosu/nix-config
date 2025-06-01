@@ -17,4 +17,4 @@ Initial config/test:
 
 Subsequent updates:
 
-  sudo ./result/sw/bin/darwin-rebuild switch --flake /git/nix-tutorial.
+ > sudo ./result/sw/bin/darwin-rebuild switch --flake /git/nix-tutorial.
