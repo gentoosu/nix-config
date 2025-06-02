@@ -1,6 +1,6 @@
 {
   description = "Mike's MBP flake";
-  
+
   inputs = {
     # Define our software
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
@@ -13,10 +13,14 @@
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
+    #Neovim flake
     pwnvim.url = "github:zmre/pwnvim";
+
+    #Utility to fix pkgs installs/Spotlight
+    mac-app-util.url = "github:hraban/mac-app-util";
   };
 
-  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, ... }: {
+  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, ... }: {
     darwinConfigurations.Mikes-MacBook-Pro = 
       darwin.lib.darwinSystem {
         #system = "x86_64-darwin";
@@ -26,7 +30,7 @@
         };
         modules = [
           ./modules/darwin
-
+          mac-app-util.darwinModules.default
           home-manager.darwinModules.home-manager
           {
             users.users.gentoosu = {

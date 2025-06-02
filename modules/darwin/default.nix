@@ -4,8 +4,12 @@
     environment.shells = [pkgs.bash pkgs.zsh];
     #environment.loginShell = pkgs.zsh;
     environment.systemPackages = [
+        #pkgs.brave
         pkgs.coreutils
         pkgs.iterm2
+        pkgs.alacritty
+        pkgs.spotify
+        pkgs.slack
     ];
     environment.systemPath = ["/opt/homebrew/bin"];
     nix.extraOptions = ''
@@ -33,12 +37,13 @@
     system.defaults.dock.tilesize = 24;
     system.defaults.dock.largesize = 32;
     system.defaults.dock.persistent-apps = [
-    "/Applications/Brave Browser.app"
+    "/Applications/Nix Apps/Brave Browser.app"
     "/Applications/iTerm.app"
-    "/Applications/Spotify.app"
+    "/Applications/Nix Apps/Spotify.app"
     "/Applications/Sublime Text.app"
     "/Applications/Visual Studio Code.app"
-    "/Applications/Slack.app"
+    "/Applications/Nix Apps/Slack.app"
+    "/Applications/Nix Apps/Alacritty.app"
     ];
     system.defaults.NSGlobalDomain.InitialKeyRepeat = 14;
     system.defaults.NSGlobalDomain.KeyRepeat = 4;
@@ -54,12 +59,12 @@
         masApps = {};
         casks = [
             "visual-studio-code"
-            "spotify"
-            "slack"
-            "alacritty"
+            #"spotify"
+            #"slack"
+            #"alacritty"
             "sublime-text"
-            "google-cloud-sdk"
-            "brave-browser"
+            #"google-cloud-sdk"
+            #"brave-browser"
         ];
         taps = ["fujiapple852/trippy"];
         brews = ["trippy"];

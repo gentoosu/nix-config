@@ -43,12 +43,25 @@ programs.bat = {
     config.theme = "TwoDark";
 };
 
+programs.chromium = {
+    enable = true;
+    package = pkgs.brave;
+    extensions = [
+        { id = "nngceckbapebfimnlniiiahkandclblb"; } #Bitwarden
+    ];
+};
+
 programs.fzf = {
     enable = true;
     enableZshIntegration = true;
 };
 
 programs.git.enable = true;
+
+programs.alacritty = {
+    enable = true;
+    theme = "solarized_dark";
+};
 
 programs.zsh = {
     enable = true;
