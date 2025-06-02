@@ -60,7 +60,11 @@ programs.zsh = {
     oh-my-zsh.theme = "agnoster";
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    shellAliases = {ls = "ls --color=auto -F";};
+    shellAliases = { 
+        ls = "ls --color=auto -F";
+        nixswitch = "sudo ./result/sw/bin/darwin-rebuild switch --flake ~/git/nix-config/.#";
+        nixup = "pushd ~/git/nix-config; nix flake update; nixswitch; popd";
+    };
     oh-my-zsh.plugins = [
         "git" 
         "helm" 

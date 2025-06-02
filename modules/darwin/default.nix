@@ -4,8 +4,8 @@
     environment.shells = [pkgs.bash pkgs.zsh];
     #environment.loginShell = pkgs.zsh;
     environment.systemPackages = [
-    pkgs.coreutils
-    pkgs.iterm2
+        pkgs.coreutils
+        pkgs.iterm2
     ];
     environment.systemPath = ["/opt/homebrew/bin"];
     nix.extraOptions = ''
@@ -48,12 +48,21 @@
     system.stateVersion = 6;
 
     homebrew = {
-    enable = true;
-    caskArgs.no_quarantine = true;
-    global.brewfile = true;
-    masApps = {};
-    casks = ["visual-studio-code" "spotify" "slack" "alacritty" "sublime-text" "google-cloud-sdk" "brave-browser"];
-    taps = ["fujiapple852/trippy"];
-    brews = ["trippy"];
+        enable = true;
+        caskArgs.no_quarantine = true;
+        global.brewfile = true;
+        masApps = {};
+        casks = [
+            "visual-studio-code"
+            "spotify"
+            "slack"
+            "alacritty"
+            "sublime-text"
+            "google-cloud-sdk"
+            "brave-browser"
+        ];
+        taps = ["fujiapple852/trippy"];
+        brews = ["trippy"];
+        onActivation.cleanup = "zap";
     };
 }

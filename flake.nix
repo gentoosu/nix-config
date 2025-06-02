@@ -1,5 +1,6 @@
 {
   description = "Mike's MBP flake";
+  
   inputs = {
     # Define our software
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
