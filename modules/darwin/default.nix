@@ -6,8 +6,8 @@
     environment.systemPackages = [
         #pkgs.brave
         pkgs.coreutils
-        pkgs.iterm2
-        pkgs.alacritty
+        #pkgs.iterm2
+        #pkgs.alacritty
         pkgs.spotify
         pkgs.slack
     ];
@@ -37,16 +37,15 @@
     system.defaults.dock.tilesize = 24;
     system.defaults.dock.largesize = 32;
     system.defaults.dock.persistent-apps = [
-    "/Applications/Nix Apps/Brave Browser.app"
-    "/Applications/iTerm.app"
-    "/Applications/Nix Apps/Spotify.app"
-    "/Applications/Sublime Text.app"
-    "/Applications/Visual Studio Code.app"
-    "/Applications/Nix Apps/Slack.app"
-    "/Applications/Nix Apps/Alacritty.app"
-    ];
-    system.defaults.NSGlobalDomain.InitialKeyRepeat = 14;
-    system.defaults.NSGlobalDomain.KeyRepeat = 4;
+        "/Users/gentoosu/Applications/Home Manager Apps/Brave Browser.app"
+        "/Applications/Nix Apps/Spotify.app"
+        "/Applications/Sublime Text.app"
+        "Users/gentoosu/Applications/Home Manager Apps/Visual Studio Code.app"
+        "/Applications/Nix Apps/Slack.app"
+        "Users/gentoosu/Applications/Home Manager Apps/Alacritty.app"
+        ];
+    system.defaults.NSGlobalDomain.InitialKeyRepeat = 15;
+    system.defaults.NSGlobalDomain.KeyRepeat = 2;
     system.defaults.NSGlobalDomain."com.apple.swipescrolldirection" = false;
 
     ### DO NOT MODIFY, for backwards compatibility
