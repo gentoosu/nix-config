@@ -44,6 +44,7 @@
               extraSpecialArgs = { inherit pwnvim; };
               users.gentoosu.imports = [
                 ./modules/home-manager
+                ./modules/darwin/programs/zed-editor
               ];
             };
           }
