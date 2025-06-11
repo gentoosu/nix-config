@@ -3,6 +3,7 @@
   pwnvim,
   ...
 }: {
+
   #Specify home-manager configs
   #DO NOT CHANGE version
   home.stateVersion = "25.05";
@@ -114,8 +115,8 @@
     ];
   };
 
-#   programs.zed-editor = import ./modules/darwin/programs/zed-editor {
-#     inherit pkgs;
-#   };
-}
+  programs.zed-editor = import ../../modules/darwin/programs/zed-editor  {
+    inherit pkgs;
+  };
 
+}

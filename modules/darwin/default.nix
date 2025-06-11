@@ -10,7 +10,7 @@
         #pkgs.alacritty
         pkgs.spotify
         pkgs.slack
-        pkgs.zed-editor
+        #pkgs.zed-editor
     ];
     environment.systemPath = ["/opt/homebrew/bin"];
     nix.extraOptions = ''
@@ -42,7 +42,7 @@
         "/Applications/Nix Apps/Spotify.app"
         "/Applications/Sublime Text.app"
         "Users/gentoosu/Applications/Home Manager Apps/Visual Studio Code.app"
-        "/Applications/Nix Apps/Zed.app"
+        "Users/gentoosu/Applications/Home Manager Apps/Zed.app"
         "/Applications/Nix Apps/Slack.app"
         "Users/gentoosu/Applications/Home Manager Apps/Alacritty.app"
         ];

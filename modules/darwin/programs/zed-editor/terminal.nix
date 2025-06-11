@@ -1,6 +1,6 @@
 {
   alternate_scroll = "off";
-  blinking = "off";
+  blinking = "on";
   copy_on_select = true;
   dock = "bottom";
   detect_venv = {

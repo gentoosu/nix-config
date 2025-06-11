@@ -9,14 +9,24 @@
   vim_mode = false;
   load_direnv = "shell_hook";
   base_keymap = "VSCode";
-  show_whitespaces = "trailing";
+  show_whitespaces = "all";
   ui_font_size = 14;
   buffer_font_size = 12;
-  "languages": {
-    "Python": {
-      "language_servers": ["ruff"]
-      // Or, if there are other language servers you want to use with Python
-      // "language_servers": ["pyright", "ruff"]
-    }
-  }
+  theme = "Solarized Dark";
+  context_servers = {
+    mcp-server-context7 = {
+      settings = {
+        default_minimum_tokens = "10000";
+      };
+    };
+  };
+#   languages = {
+#     Python = {
+#       language_server = ["ruff"];
+#       format_on_save = "on"
+#       // "language_servers": {
+#         "name": "ruff"
+#       }
+#     }
+#   }
 }
