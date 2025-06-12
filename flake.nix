@@ -25,7 +25,8 @@
       darwin.lib.darwinSystem {
         #system = "x86_64-darwin";
         pkgs = import nixpkgs {
-          system = "x86_64-darwin";
+          #system = "x86_64-darwin";
+          system = "aarch64-darwin";
           config.allowUnfree = true;
         };
         modules = [
