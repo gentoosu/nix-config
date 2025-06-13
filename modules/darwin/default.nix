@@ -37,7 +37,7 @@
     system.defaults.dock.persistent-apps = [
         "/Users/gentoosu/Applications/Home Manager Apps/Brave Browser.app"
         "/Applications/Nix Apps/Spotify.app"
-        #"/Applications/Sublime Text.app"
+        "/Applications/Sublime Text.app"
         #"Users/gentoosu/Applications/Home Manager Apps/Visual Studio Code.app"
         "/Users/gentoosu/Applications/Home Manager Apps/Zed.app"
         "/Applications/Nix Apps/Slack.app"
@@ -50,22 +50,22 @@
     ### DO NOT MODIFY, for backwards compatibility
     system.stateVersion = 6;
 
-    # homebrew = {
-    #     enable = true;
-    #     caskArgs.no_quarantine = true;
-    #     global.brewfile = true;
-    #     masApps = {};
-    #     casks = [
-    #         #"visual-studio-code"
-    #         #"spotify"
-    #         #"slack"
-    #         #"alacritty"
-    #         #"sublime-text"
-    #         #"google-cloud-sdk"
-    #         #"brave-browser"
-    #     ];
-    #     taps = ["fujiapple852/trippy"];
-    #     brews = ["trippy"];
-    #     onActivation.cleanup = "zap";
-    # };
+    homebrew = {
+        enable = true;
+        caskArgs.no_quarantine = true;
+        global.brewfile = true;
+        masApps = {};
+        casks = [
+            #"visual-studio-code"
+            #"spotify"
+            #"slack"
+            #"alacritty"
+            "sublime-text"
+            #"google-cloud-sdk"
+            #"brave-browser"
+        ];
+        #taps = ["fujiapple852/trippy"];
+        #brews = ["trippy"];
+        onActivation.cleanup = "zap";
+    };
 }
