@@ -56,13 +56,7 @@
         global.brewfile = true;
         masApps = {};
         casks = [
-            #"visual-studio-code"
-            #"spotify"
-            #"slack"
-            #"alacritty"
             "sublime-text"
-            #"google-cloud-sdk"
-            #"brave-browser"
         ];
         #taps = ["fujiapple852/trippy"];
         #brews = ["trippy"];
