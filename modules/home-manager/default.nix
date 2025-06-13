@@ -30,7 +30,7 @@
     pkgs.tree
     pkgs.watch
     pkgs.yq
-    pwnvim.packages."x86_64-darwin".default
+    pwnvim.packages."aarch64-darwin".default
   ];
 
   home.homeDirectory = "/Users/gentoosu";
@@ -68,6 +68,11 @@
   programs.alacritty = {
     enable = true;
     theme = "solarized_dark";
+    settings = {
+      font = {
+        size = 14;
+      };
+    };
   };
 
   programs.zsh = {
@@ -98,22 +103,22 @@
     ];
   };
 
-  programs.vscode = {
-    enable = true;
-    profiles.default.extensions = with pkgs.vscode-extensions; [
-      bbenoist.nix
-      brettm12345.nixfmt-vscode
-      eamodio.gitlens
-      hashicorp.terraform
-      ms-python.vscode-pylance
-      ms-python.python
-      hashicorp.hcl
-      hashicorp.terraform
-      wholroyd.jinja
-      redhat.vscode-yaml
-      ms-kubernetes-tools.vscode-kubernetes-tools
-    ];
-  };
+  # programs.vscode = {
+  #   enable = true;
+  #   profiles.default.extensions = with pkgs.vscode-extensions; [
+  #     bbenoist.nix
+  #     brettm12345.nixfmt-vscode
+  #     eamodio.gitlens
+  #     hashicorp.terraform
+  #     ms-python.vscode-pylance
+  #     ms-python.python
+  #     hashicorp.hcl
+  #     hashicorp.terraform
+  #     wholroyd.jinja
+  #     redhat.vscode-yaml
+  #     ms-kubernetes-tools.vscode-kubernetes-tools
+  #   ];
+  # };
 
   programs.zed-editor = import ../../modules/darwin/programs/zed-editor  {
     inherit pkgs;

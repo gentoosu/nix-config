@@ -12,8 +12,7 @@ Install homebrew:
 ###################################
 
 Initial config/test:
-
- > nix --extra-experimental-features "nix-command flakes" build .#
+  > nix --extra-experimental-features "nix-command flakes" build .#darwinConfigurations.{{ YOUR COMPUTER NAME FROM flakes.nix}}.system
 
 Subsequent updates:
 
@@ -25,3 +24,6 @@ Issues I haven't figured out yet:
 - Set system default browser
 - Install Brave/Chrome extensions
 - Pass username as a variable
+
+
+*** Some settings require you to logout/login before taking affect, ex: keyrepeat

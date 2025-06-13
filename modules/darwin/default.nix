@@ -4,13 +4,10 @@
     environment.shells = [pkgs.bash pkgs.zsh];
     #environment.loginShell = pkgs.zsh;
     environment.systemPackages = [
-        #pkgs.brave
         pkgs.coreutils
-        #pkgs.iterm2
-        #pkgs.alacritty
         pkgs.spotify
         pkgs.slack
-        #pkgs.zed-editor
+        #pkgs.sublime
     ];
     environment.systemPath = ["/opt/homebrew/bin"];
     nix.extraOptions = ''
@@ -32,7 +29,7 @@
     system.primaryUser = "gentoosu";
     system.defaults.finder.AppleShowAllExtensions = true;
     system.defaults.finder._FXShowPosixPathInTitle = true;
-    system.defaults.dock.autohide = false;
+    system.defaults.dock.autohide = true;
     system.defaults.dock.show-recents = false;
     system.defaults.dock.magnification = true;
     system.defaults.dock.tilesize = 24;
@@ -40,11 +37,11 @@
     system.defaults.dock.persistent-apps = [
         "/Users/gentoosu/Applications/Home Manager Apps/Brave Browser.app"
         "/Applications/Nix Apps/Spotify.app"
-        "/Applications/Sublime Text.app"
-        "Users/gentoosu/Applications/Home Manager Apps/Visual Studio Code.app"
-        "Users/gentoosu/Applications/Home Manager Apps/Zed.app"
+        #"/Applications/Sublime Text.app"
+        #"Users/gentoosu/Applications/Home Manager Apps/Visual Studio Code.app"
+        "/Users/gentoosu/Applications/Home Manager Apps/Zed.app"
         "/Applications/Nix Apps/Slack.app"
-        "Users/gentoosu/Applications/Home Manager Apps/Alacritty.app"
+        "/Users/gentoosu/Applications/Home Manager Apps/Alacritty.app"
         ];
     system.defaults.NSGlobalDomain.InitialKeyRepeat = 15;
     system.defaults.NSGlobalDomain.KeyRepeat = 2;
@@ -53,22 +50,22 @@
     ### DO NOT MODIFY, for backwards compatibility
     system.stateVersion = 6;
 
-    homebrew = {
-        enable = true;
-        caskArgs.no_quarantine = true;
-        global.brewfile = true;
-        masApps = {};
-        casks = [
-            "visual-studio-code"
-            #"spotify"
-            #"slack"
-            #"alacritty"
-            "sublime-text"
-            #"google-cloud-sdk"
-            #"brave-browser"
-        ];
-        taps = ["fujiapple852/trippy"];
-        brews = ["trippy"];
-        onActivation.cleanup = "zap";
-    };
+    # homebrew = {
+    #     enable = true;
+    #     caskArgs.no_quarantine = true;
+    #     global.brewfile = true;
+    #     masApps = {};
+    #     casks = [
+    #         #"visual-studio-code"
+    #         #"spotify"
+    #         #"slack"
+    #         #"alacritty"
+    #         #"sublime-text"
+    #         #"google-cloud-sdk"
+    #         #"brave-browser"
+    #     ];
+    #     taps = ["fujiapple852/trippy"];
+    #     brews = ["trippy"];
+    #     onActivation.cleanup = "zap";
+    # };
 }

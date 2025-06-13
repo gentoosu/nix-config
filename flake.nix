@@ -23,7 +23,7 @@
   outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, ... }: {
     darwinConfigurations.Mikes-MacBook-Pro = 
       darwin.lib.darwinSystem {
-        #system = "x86_64-darwin";
+        #system = "aarch64-darwin";
         pkgs = import nixpkgs {
           #system = "x86_64-darwin";
           system = "aarch64-darwin";
