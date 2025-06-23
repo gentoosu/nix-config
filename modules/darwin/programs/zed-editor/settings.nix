@@ -15,4 +15,5 @@
   ui_font_size = 15;
   buffer_font_size = 12;
   theme = "Solarized Dark";
+  tab_size =2;
 }

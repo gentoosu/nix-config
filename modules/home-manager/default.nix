@@ -10,6 +10,7 @@
   home.packages = [
     pkgs.ansible
     pkgs.awscli
+    pkgs.cloudflared
     pkgs.curl
     pkgs.docker
     pkgs.dos2unix
@@ -20,11 +21,11 @@
     pkgs.iftop
     pkgs.iperf3
     pkgs.jq
+    pkgs.postgresql
     pkgs.kubectl
     pkgs.kubectx
     pkgs.kustomize
     pkgs.nmap
-    #    pkgs.nodejs_24
     pkgs.ripgrep
     pkgs.terraform
     pkgs.tree
@@ -42,7 +43,7 @@
 
   home.sessionVariables = {
     PAGER = "less";
-    EDITOR = "vmim";
+    EDITOR = "vim";
   };
 
   programs.bat = {
