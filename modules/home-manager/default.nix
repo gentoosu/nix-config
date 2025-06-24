@@ -1,11 +1,12 @@
 {
   pkgs,
   pwnvim,
+  username,
   ...
 }: {
 
-  #Specify home-manager configs
-  #DO NOT CHANGE version
+  # Specify home-manager configs
+  # DO NOT CHANGE version
   home.stateVersion = "25.05";
   home.packages = [
     pkgs.ansible
@@ -34,7 +35,7 @@
     pwnvim.packages."aarch64-darwin".default
   ];
 
-  home.homeDirectory = "/Users/gentoosu";
+  home.homeDirectory = "/Users/${username}";
 
   home.keyboard = {
     layout = "us";
