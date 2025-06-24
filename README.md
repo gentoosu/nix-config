@@ -17,11 +17,6 @@ A comprehensive Nix Darwin setup for macOS with Home Manager integration, featur
 sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
 ```
 
-### Install Homebrew
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
 ## Quick Start
 
 ### 1. Clone this repository
