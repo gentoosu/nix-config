@@ -13,8 +13,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-FLAKE_DIR="$HOME/git/nix-config"
-CONFIG_FILE="$FLAKE_DIR/config.nix"
+FLAKE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Functions
 print_help() {
@@ -61,19 +60,15 @@ success() {
 
 # Check if we're in the right directory
 check_directory() {
-    if [[ ! -f "$CONFIG_FILE" ]]; then
-        error "Configuration file not found at $CONFIG_FILE"
-    fi
-    
     if [[ ! -f "$FLAKE_DIR/flake.nix" ]]; then
         error "flake.nix not found at $FLAKE_DIR/flake.nix"
     fi
 }
 
-# Get hostname from config.nix
+# Get hostname from flake.nix
 get_hostname() {
-    if [[ -f "$CONFIG_FILE" ]]; then
-        grep -o 'hostName = "[^"]*"' "$CONFIG_FILE" | sed 's/hostName = "\(.*\)"/\1/' || echo "Mikes-MacBook-Pro"
+    if [[ -f "$FLAKE_DIR/flake.nix" ]]; then
+        grep -o 'hostName = "[^"]*"' "$FLAKE_DIR/flake.nix" | sed 's/hostName = "\(.*\)"/\1/' || echo "Mikes-MacBook-Pro"
     else
         echo "Mikes-MacBook-Pro"
     fi
