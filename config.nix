@@ -56,9 +56,9 @@
       "Brave Browser"      # Via Home Manager
       "Spotify"           # Via Nix
       "Sublime Text"      # Via Homebrew
-      "Zed"              # Via Home Manager  
+      "Zed"              # Via Home Manager
       "Slack"            # Via Nix
-      "Alacritty"        # Via Home Manager
+      #"Alacritty"        # Via Home Manager
     ];
   };
 
@@ -67,7 +67,7 @@
     editor = "vim";
     pager = "less";
     shell = "zsh";
-    
+
     # Git configuration
     git = {
       enable = true;
@@ -130,7 +130,7 @@
         "fzf"
         "vscode"
       ];
-      
+
       aliases = {
         ls = "ls --color=auto -F";
         nixswitch = "sudo ./result/sw/bin/darwin-rebuild switch --flake ~/git/nix-config/.#";
@@ -143,7 +143,7 @@
   homebrew = {
     enable = true;
     cleanup = "zap";  # Options: "none", "uninstall", "zap"
-    
+
     # Mac App Store applications
     masApps = {
       # Add Mac App Store apps here

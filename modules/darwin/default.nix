@@ -6,6 +6,7 @@
         pkgs.coreutils
         pkgs.spotify
         pkgs.slack
+        pkgs.rectangle
     ];
     environment.systemPath = ["/opt/homebrew/bin"];
     nix.extraOptions = ''
@@ -36,7 +37,7 @@
         "/Applications/Sublime Text.app"
         "/Users/${username}/Applications/Home Manager Apps/Zed.app"
         "/Applications/Nix Apps/Slack.app"
-        "/Users/${username}/Applications/Home Manager Apps/Alacritty.app"
+        #"/Users/${username}/Applications/Home Manager Apps/Alacritty.app"
         ];
     system.defaults.NSGlobalDomain.InitialKeyRepeat = 15;
     system.defaults.NSGlobalDomain.KeyRepeat = 2;
@@ -52,7 +53,10 @@
         masApps = {};
         casks = [
             "sublime-text"
+            #"claude-code"
         ];
+        onActivation.autoUpdate = true;
+        onActivation.upgrade = true;
         onActivation.cleanup = "zap";
     };
 }
