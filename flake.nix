@@ -13,15 +13,16 @@
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-    #Neovim flake
+    # Neovim flake
     pwnvim.url = "github:zmre/pwnvim";
 
-    #Utility to fix pkgs installs/Spotlight
+    # Utility to fix pkgs installs/Spotlight
     mac-app-util.url = "github:hraban/mac-app-util";
 
+    # Nix Homebrew integration
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
 
-    # Optional: Declarative tap management
+    # Homebrew taps for declarative management
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
       flake = false;
@@ -30,35 +31,41 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-
   };
 
-  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, nix-homebrew, homebrew-core, homebrew-cask,... }: {
-    darwinConfigurations.Mikes-MacBook-Pro =
-      darwin.lib.darwinSystem {
-        #system = "aarch64-darwin";
+  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, nix-homebrew, homebrew-core, homebrew-cask, ...}: 
+    let
+      # Configuration variables - easily customizable
+      username = "gentoosu";
+      system = "aarch64-darwin";
+      hostName = "Mikes-MacBook-Pro";
+    in
+    {
+      darwinConfigurations.${hostName} = darwin.lib.darwinSystem {
         pkgs = import nixpkgs {
-          #system = "x86_64-darwin";
-          system = "aarch64-darwin";
+          inherit system;
           config.allowUnfree = true;
         };
+        
+        specialArgs = { inherit username; };
+        
         modules = [
           ./modules/darwin
           mac-app-util.darwinModules.default
           home-manager.darwinModules.home-manager
           {
-            users.users.gentoosu = {
-              #name = "Mike";
-              home = "/Users/gentoosu";
+            users.users.${username} = {
+              home = "/Users/${username}";
             };
 
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              extraSpecialArgs = { inherit pwnvim; };
-              users.gentoosu.imports = [
+              extraSpecialArgs = { 
+                inherit pwnvim username; 
+              };
+              users.${username}.imports = [
                 ./modules/home-manager
-                #./modules/darwin/programs/zed-editor
               ];
             };
           }
@@ -73,22 +80,20 @@
               enableRosetta = true;
 
               # User owning the Homebrew prefix
-              user = "gentoosu";
+              user = username;
 
-              # Optional: Declarative tap management
+              # Declarative tap management
               taps = {
-                  "homebrew/homebrew-core" = homebrew-core;
-                  "homebrew/homebrew-cask" = homebrew-cask;
+                "homebrew/homebrew-core" = homebrew-core;
+                "homebrew/homebrew-cask" = homebrew-cask;
               };
 
-              # Optional: Enable fully-declarative tap management
-              #
-              # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
+              # Enable fully-declarative tap management
+              # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`
               mutableTaps = false;
             };
           }
-
         ];
       };
-  };
+    };
 }

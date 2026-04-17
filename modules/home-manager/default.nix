@@ -1,40 +1,50 @@
 {
   pkgs,
   pwnvim,
+  username,
   ...
 }: {
 
-  #Specify home-manager configs
-  #DO NOT CHANGE version
+  # Specify home-manager configs
+  # DO NOT CHANGE version
   home.stateVersion = "25.05";
   home.packages = [
     pkgs.ansible
-    pkgs.awscli
+    pkgs.awscli2
+    #pkgs.claude-code
     pkgs.cloudflared
     pkgs.curl
     pkgs.docker
     pkgs.dos2unix
     pkgs.git
+    pkgs.google-chrome
     pkgs.google-cloud-sdk
     pkgs.kubernetes-helm
     pkgs.htop
     pkgs.iftop
     pkgs.iperf3
     pkgs.jq
+    pkgs.meslo-lgs-nf
     pkgs.postgresql
     pkgs.kubectl
     pkgs.kubectx
     pkgs.kustomize
+    pkgs.localstack
     pkgs.nmap
+    #pkgs.rectangle
     pkgs.ripgrep
+    #pkgs.strace
     pkgs.terraform
+    pkgs.terraform-local
+    pkgs.terragrunt
     pkgs.tree
+    pkgs.uv
     pkgs.watch
     pkgs.yq
     pwnvim.packages."aarch64-darwin".default
   ];
 
-  home.homeDirectory = "/Users/gentoosu";
+  home.homeDirectory = "/Users/${username}";
 
   home.keyboard = {
     layout = "us";
@@ -91,6 +101,9 @@
       nixswitch = "sudo ./result/sw/bin/darwin-rebuild switch --flake ~/git/nix-config/.#";
       nixup = "pushd ~/git/nix-config; nix flake update; nixswitch; popd";
     };
+    initExtra = ''
+      export PATH="$HOME/.local/bin:$PATH"
+    '';
     oh-my-zsh.plugins = [
       "git"
       "helm"

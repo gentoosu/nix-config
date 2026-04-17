@@ -10,7 +10,7 @@
     };
   };
   env = {
-    TERM = "alacritty";
+    TERM = "";
   };
   font_family = "0xProto Nerd Font Mono";
   working_directory = "current_project_directory";
