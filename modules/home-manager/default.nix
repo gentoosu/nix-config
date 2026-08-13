@@ -121,8 +121,10 @@
       nixup = "pushd ~/git/nix-config; nix flake update; nixswitch; popd";
     };
     initContent = ''
+      prompt_context() {}
+      setopt PROMPT_SUBST
       export PATH="$HOME/.local/bin:$PATH"
-      export PS1="$(kube_ps1)%{%f%b%k%}$(build_prompt)"
+      export PROMPT='$(kube_ps1) '$PROMPT
     '';
     oh-my-zsh.plugins = [
       "git"
@@ -134,6 +136,7 @@
       "common-aliases"
       "fzf"
       "vscode"
+      "kube-ps1"
     ];
   };
 
