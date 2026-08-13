@@ -276,3 +276,8 @@ Options:
 - [Home Manager Documentation](https://github.com/nix-community/home-manager)
 - [Nix Flakes Tutorial](https://nixos.wiki/wiki/Flakes)
 - [macOS Defaults Reference](https://macos-defaults.com/)
+-
+-
+-
+- ######## TEMP ##########
+- sudo nix run nix-darwin -- switch --flake .#Mikes-MacBook-Pro
