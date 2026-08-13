@@ -23,34 +23,35 @@
     pkgs.gnutar
     pkgs.google-chrome
     pkgs.google-cloud-sdk
-    pkgs.kubernetes-helm
     pkgs.htop
     pkgs.iftop
     pkgs.iperf3
     pkgs.jq
-    pkgs.meslo-lgs-nf
-    pkgs.postgresql
     pkgs.krew
     pkgs.kubecolor
     pkgs.kubectl
+    # pkgs.kubectl-access-matrix  ### Doesn't exist in nix packages
     pkgs.kubectl-ktop
     pkgs.kubectl-neat
-    # pkgs.kubectl-access-matrix  ### Doesn't exist in nix packages
     pkgs.kubectl-node-shell
-    # pkgs.kubectl-sniff ### Doesn't exist in nix packages
     # pkgs.kubectl-resource-capacity ### Doesn't exist in nix packages
     # pkgs.kubectl-score ### Doesn't exist in nix packages
+    # pkgs.kubectl-sniff ### Doesn't exist in nix packages
     # pkgs.kubectl-stern ### Doesn't exist in nix packages
     pkgs.kubectx
     # pkgs.kubens
+    pkgs.kubernetes-helm
     pkgs.kubie
     pkgs.kustomize
     pkgs.localstack
+    pkgs.meslo-lgs-nf
     pkgs.nmap
+    pkgs.opentofu
+    pkgs.postgresql
     #pkgs.rectangle
     pkgs.ripgrep
+    pkgs.step-cli
     #pkgs.strace
-    pkgs.opentofu
     #pkgs.terraform-local
     pkgs.terragrunt
     pkgs.tfk8s
