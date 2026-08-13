@@ -13,9 +13,6 @@
     pkgs.rectangle
   ];
   environment.systemPath = ["/opt/homebrew/bin"];
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
 
   system.keyboard = {
     enableKeyMapping = true;

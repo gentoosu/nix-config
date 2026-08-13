@@ -22,6 +22,9 @@
     # Nix Homebrew integration
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
 
+    # Determinate Nix (manages the Nix installation/daemon)
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
+
     # Homebrew taps for declarative management
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -33,7 +36,7 @@
     };
   };
 
-  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, nix-homebrew, homebrew-core, homebrew-cask, ...}: 
+  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, nix-homebrew, homebrew-core, homebrew-cask, determinate, ...}:
     let
       # Configuration variables - easily customizable
       username = "gentoosu";
@@ -51,6 +54,14 @@
         
         modules = [
           ./modules/darwin
+
+          determinate.darwinModules.default
+          {
+            # Determinate Nix owns the Nix installation and daemon;
+            # this also disables nix-darwin's built-in Nix management.
+            determinateNix.enable = true;
+          }
+
           mac-app-util.darwinModules.default
           home-manager.darwinModules.home-manager
           {
