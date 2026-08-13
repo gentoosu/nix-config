@@ -122,6 +122,7 @@
     };
     initContent = ''
       export PATH="$HOME/.local/bin:$PATH"
+      export PS1="$(kube_ps1)%{%f%b%k%}$(build_prompt)"
     '';
     oh-my-zsh.plugins = [
       "git"
