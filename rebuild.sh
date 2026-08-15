@@ -14,7 +14,7 @@ NC='\033[0m' # No Color
 
 # Configuration
 FLAKE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CONFIG_NAME="default"
+CONFIG_NAME="${CONFIG_NAME:-default}"
 
 # Functions
 print_help() {
@@ -40,6 +40,7 @@ print_help() {
     echo "  $0 switch                 # Apply configuration"
     echo "  $0 update                 # Update and rebuild"
     echo "  $0 build --dry-run        # Test build without applying"
+    echo "  CONFIG_NAME=work $0 switch  # Apply a non-default configuration"
 }
 
 log() {

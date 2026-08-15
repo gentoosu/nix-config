@@ -38,21 +38,18 @@
 
   outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, nix-homebrew, homebrew-core, homebrew-cask, determinate, ...}:
     let
-      # Configuration variables - easily customizable
-      username = "gentoosu";
       system = "aarch64-darwin";
-    in
-    {
-      # Single config shared by every Mac; always targeted as .#default
-      # so the machine's hostname doesn't matter.
-      darwinConfigurations.default = darwin.lib.darwinSystem {
+
+      # Build the shared system config for a given login user. Every Mac
+      # runs the same config; only the username differs per machine.
+      mkDarwin = username: darwin.lib.darwinSystem {
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
         };
-        
+
         specialArgs = { inherit username; };
-        
+
         modules = [
           ./modules/darwin
 
@@ -73,8 +70,8 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              extraSpecialArgs = { 
-                inherit pwnvim username; 
+              extraSpecialArgs = {
+                inherit pwnvim username;
               };
               users.${username}.imports = [
                 ./modules/home-manager
@@ -107,5 +104,13 @@
           }
         ];
       };
+    in
+    {
+      # Personal Macs; targeted as .#default so hostname doesn't matter.
+      darwinConfigurations.default = mkDarwin "gentoosu";
+
+      # Machines with a different login get their own one-liner, e.g.:
+      #   darwinConfigurations.work = mkDarwin "work-username";
+      # then switch with: CONFIG_NAME=work ./rebuild.sh switch
     };
 }

@@ -114,8 +114,21 @@ nix-config/
 ## Customization Guide
 
 ### Changing Username
-1. Edit `flake.nix` and update the `username` variable in the `let` block
+1. Edit `flake.nix` and change the username passed to `mkDarwin` in `darwinConfigurations.default`
 2. Rebuild: `sudo darwin-rebuild switch --flake ~/git/nix-config#default`
+
+### Adding a Mac with a Different Login (e.g. work laptop)
+The shared config is built by the `mkDarwin` function, which takes the machine's login username. Add a one-line entry in `flake.nix`:
+
+```nix
+darwinConfigurations.work = mkDarwin "work-username";
+```
+
+Then on that machine, bootstrap with `sudo nix run nix-darwin -- switch --flake .#work` and afterwards rebuild with:
+
+```bash
+CONFIG_NAME=work ./rebuild.sh switch
+```
 
 ### Adding Applications
 
