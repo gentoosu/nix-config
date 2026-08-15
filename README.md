@@ -47,8 +47,9 @@ Edit `flake.nix` to match your preferences. Look for the configuration variables
 # Configuration variables - easily customizable
 username = "your-username";  # Change from "gentoosu"
 system = "aarch64-darwin";   # or "x86_64-darwin" for Intel Macs
-hostName = "Your-MacBook-Pro";  # Update to match your hostname
 ```
+
+The configuration is published as `darwinConfigurations.default` and always targeted by that fixed name, so it applies identically to any Mac regardless of its hostname.
 
 ### 3. First activation
 
@@ -62,16 +63,16 @@ Then build and activate (nix-darwin isn't installed yet on a fresh machine, so b
 
 ```bash
 # Test the configuration first
-nix build .#darwinConfigurations.Your-MacBook-Pro.system
+nix build .#darwinConfigurations.default.system
 
 # Apply the configuration
-sudo nix run nix-darwin -- switch --flake .#Your-MacBook-Pro
+sudo nix run nix-darwin -- switch --flake .#default
 ```
 
 After the first activation, `darwin-rebuild` is on your PATH and subsequent rebuilds use it directly (or via `./rebuild.sh`):
 
 ```bash
-sudo darwin-rebuild switch --flake ~/git/nix-config/.#
+sudo darwin-rebuild switch --flake ~/git/nix-config#default
 ```
 
 ## How Determinate Nix fits in
@@ -114,8 +115,7 @@ nix-config/
 
 ### Changing Username
 1. Edit `flake.nix` and update the `username` variable in the `let` block
-2. Update `hostName` if desired
-3. Rebuild: `sudo darwin-rebuild switch --flake ~/git/nix-config/.#`
+2. Rebuild: `sudo darwin-rebuild switch --flake ~/git/nix-config#default`
 
 ### Adding Applications
 
@@ -223,12 +223,12 @@ nixup
 # Manual commands
 cd ~/git/nix-config
 nix flake update
-sudo darwin-rebuild switch --flake ~/git/nix-config/.#
+sudo darwin-rebuild switch --flake ~/git/nix-config#default
 ```
 
 ### Build without applying
 ```bash
-nix build .#darwinConfigurations.Your-MacBook-Pro.system
+nix build .#darwinConfigurations.default.system
 ```
 
 ### Check configuration

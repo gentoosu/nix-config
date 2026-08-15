@@ -41,10 +41,11 @@
       # Configuration variables - easily customizable
       username = "gentoosu";
       system = "aarch64-darwin";
-      hostName = "Mikes-MacBook-Pro";
     in
     {
-      darwinConfigurations.${hostName} = darwin.lib.darwinSystem {
+      # Single config shared by every Mac; always targeted as .#default
+      # so the machine's hostname doesn't matter.
+      darwinConfigurations.default = darwin.lib.darwinSystem {
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
