@@ -22,6 +22,9 @@
     # Nix Homebrew integration
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
 
+    # Determinate Nix (manages the Nix installation/daemon)
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
+
     # Homebrew taps for declarative management
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -33,24 +36,30 @@
     };
   };
 
-  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, nix-homebrew, homebrew-core, homebrew-cask, ...}: 
+  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, nix-homebrew, homebrew-core, homebrew-cask, determinate, ...}:
     let
-      # Configuration variables - easily customizable
-      username = "gentoosu";
       system = "aarch64-darwin";
-      hostName = "Mikes-MacBook-Pro";
-    in
-    {
-      darwinConfigurations.${hostName} = darwin.lib.darwinSystem {
+
+      # Build the shared system config for a given login user. Every Mac
+      # runs the same config; only the username differs per machine.
+      mkDarwin = username: darwin.lib.darwinSystem {
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
         };
-        
+
         specialArgs = { inherit username; };
-        
+
         modules = [
           ./modules/darwin
+
+          determinate.darwinModules.default
+          {
+            # Determinate Nix owns the Nix installation and daemon;
+            # this also disables nix-darwin's built-in Nix management.
+            determinateNix.enable = true;
+          }
+
           mac-app-util.darwinModules.default
           home-manager.darwinModules.home-manager
           {
@@ -61,8 +70,8 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              extraSpecialArgs = { 
-                inherit pwnvim username; 
+              extraSpecialArgs = {
+                inherit pwnvim username;
               };
               users.${username}.imports = [
                 ./modules/home-manager
@@ -95,5 +104,13 @@
           }
         ];
       };
+    in
+    {
+      # Personal Macs; targeted as .#default so hostname doesn't matter.
+      darwinConfigurations.default = mkDarwin "gentoosu";
+
+      # Machines with a different login get their own one-liner, e.g.:
+      #   darwinConfigurations.work = mkDarwin "work-username";
+      # then switch with: CONFIG_NAME=work ./rebuild.sh switch
     };
 }

@@ -1,9 +1,10 @@
 # Nix Darwin Configuration
 
-A comprehensive Nix Darwin setup for macOS with Home Manager integration, featuring a username variable system for easy customization.
+A comprehensive Nix Darwin setup for macOS built on [Determinate Nix](https://determinate.systems/), with Home Manager integration and a username variable system for easy customization.
 
 ## Features
 
+- **Determinate Nix**: The Nix installation and daemon are managed by `determinate-nixd`, pinned and updated declaratively through this flake
 - **Username Variable**: Easy username changes in one location
 - **Home Manager Integration**: User-level package and dotfile management
 - **Homebrew Integration**: Declarative Homebrew package management
@@ -12,15 +13,19 @@ A comprehensive Nix Darwin setup for macOS with Home Manager integration, featur
 
 ## Prerequisites
 
-### Install Nix
+### Install Determinate Nix
+
+Download and run the macOS package installer:
+
+- [Determinate.pkg (Universal)](https://install.determinate.systems/determinate-pkg/stable/Universal)
+
+Or install from the terminal:
+
 ```bash
-sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
+curl -fsSL https://install.determinate.systems/nix | sh -s -- install --determinate
 ```
 
-### Install Homebrew
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
+Flakes and `nix-command` are enabled out of the box — no extra configuration needed. If a Mac already has upstream Nix installed, uninstall it first (the installer will detect it and guide you).
 
 ## Quick Start
 
@@ -37,17 +42,54 @@ Edit `flake.nix` to match your preferences. Look for the configuration variables
 # Configuration variables - easily customizable
 username = "your-username";  # Change from "gentoosu"
 system = "aarch64-darwin";   # or "x86_64-darwin" for Intel Macs
-hostName = "Your-MacBook-Pro";  # Update to match your hostname
 ```
 
-### 3. Initial build and activation
+The configuration is published as `darwinConfigurations.default` and always targeted by that fixed name, so it applies identically to any Mac regardless of its hostname.
+
+### 3. First activation
+
+The Determinate installer writes `/etc/nix/nix.custom.conf` at install time. This flake manages that file declaratively, so on each new machine you must move the installer's copy aside once before the first activation:
+
+```bash
+sudo mv /etc/nix/nix.custom.conf /etc/nix/nix.custom.conf.before-nix-darwin
+```
+
+Then build and activate (nix-darwin isn't installed yet on a fresh machine, so bootstrap it with `nix run`):
+
 ```bash
 # Test the configuration first
-nix --extra-experimental-features "nix-command flakes" build .#darwinConfigurations.Your-MacBook-Pro.system
+nix build .#darwinConfigurations.default.system
 
 # Apply the configuration
-sudo darwin-rebuild switch --flake ~/git/nix-config/.#
+sudo nix run nix-darwin -- switch --flake .#default
 ```
+
+After the first activation, `darwin-rebuild` is on your PATH and subsequent rebuilds use it directly (or via `./rebuild.sh`):
+
+```bash
+sudo darwin-rebuild switch --flake ~/git/nix-config#default
+```
+
+## How Determinate Nix fits in
+
+nix-darwin normally manages the Nix installation itself (daemon, `nix.conf`, garbage collection). Under Determinate, `determinate-nixd` owns all of that instead. This flake wires that up with the `determinate` input and its darwin module:
+
+```nix
+determinate.darwinModules.default
+{
+  determinateNix.enable = true;
+}
+```
+
+`determinateNix.enable = true` disables nix-darwin's built-in Nix management, so the `nix.*` options (`nix.settings`, `nix.gc`, `nix.extraOptions`, etc.) are intentionally unused in this config. To set custom Nix daemon settings (substituters, trusted keys, etc.), use the module instead:
+
+```nix
+determinateNix.customSettings = {
+  extra-substituters = "https://example.cachix.org";
+};
+```
+
+These are written to `/etc/nix/nix.custom.conf`, the file Determinate reserves for user overrides. Determinate Nix itself is upgraded by updating the flake lock (`nix flake update determinate`) and rebuilding — not by re-running the installer.
 
 ## Configuration Structure
 
@@ -67,9 +109,21 @@ nix-config/
 ## Customization Guide
 
 ### Changing Username
-1. Edit `flake.nix` and update the `username` variable in the `let` block
-2. Update `hostName` if desired
-3. Rebuild: `sudo darwin-rebuild switch --flake ~/git/nix-config/.#`
+1. Edit `flake.nix` and change the username passed to `mkDarwin` in `darwinConfigurations.default`
+2. Rebuild: `sudo darwin-rebuild switch --flake ~/git/nix-config#default`
+
+### Adding a Mac with a Different Login (e.g. work laptop)
+The shared config is built by the `mkDarwin` function, which takes the machine's login username. Add a one-line entry in `flake.nix`:
+
+```nix
+darwinConfigurations.work = mkDarwin "work-username";
+```
+
+Then on that machine, bootstrap with `sudo nix run nix-darwin -- switch --flake .#work` and afterwards rebuild with:
+
+```bash
+CONFIG_NAME=work ./rebuild.sh switch
+```
 
 ### Adding Applications
 
@@ -177,12 +231,12 @@ nixup
 # Manual commands
 cd ~/git/nix-config
 nix flake update
-sudo darwin-rebuild switch --flake ~/git/nix-config/.#
+sudo darwin-rebuild switch --flake ~/git/nix-config#default
 ```
 
 ### Build without applying
 ```bash
-nix build .#darwinConfigurations.Your-MacBook-Pro.system
+nix build .#darwinConfigurations.default.system
 ```
 
 ### Check configuration
@@ -193,6 +247,11 @@ nix flake check
 ### Show available outputs
 ```bash
 nix flake show
+```
+
+### Check Determinate Nix status
+```bash
+determinate-nixd status
 ```
 
 ## Included Applications
@@ -213,11 +272,17 @@ nix flake show
 
 ## Troubleshooting
 
-### Permission Issues
-If you encounter permission errors:
+### "Unexpected files in /etc, aborting activation"
+On a machine's first activation, nix-darwin refuses to overwrite files it doesn't recognize — typically `/etc/nix/nix.custom.conf`, written by the Determinate installer. Move it aside and retry:
+
 ```bash
-sudo chown -R $(whoami) /nix
+sudo mv /etc/nix/nix.custom.conf /etc/nix/nix.custom.conf.before-nix-darwin
 ```
+
+The installer's copy contains only comments, so nothing is lost.
+
+### "Determinate detected, aborting activation"
+This means a config without `determinateNix.enable = true` (or `nix.enable = false`) is being activated on a machine running Determinate — for example, an old branch of this repo. Rebuild from a branch that includes the Determinate module.
 
 ### Homebrew Integration Issues
 Ensure Homebrew is in your PATH:
@@ -272,12 +337,9 @@ Options:
 
 ## Resources
 
-- [Nix Darwin Documentation](https://github.com/LnL7/nix-darwin/)
+- [Determinate Nix Documentation](https://docs.determinate.systems/)
+- [Using Determinate with nix-darwin](https://docs.determinate.systems/guides/nix-darwin/)
+- [Nix Darwin Documentation](https://github.com/nix-darwin/nix-darwin)
 - [Home Manager Documentation](https://github.com/nix-community/home-manager)
 - [Nix Flakes Tutorial](https://nixos.wiki/wiki/Flakes)
 - [macOS Defaults Reference](https://macos-defaults.com/)
--
--
--
-- ######## TEMP ##########
-- sudo nix run nix-darwin -- switch --flake .#Mikes-MacBook-Pro

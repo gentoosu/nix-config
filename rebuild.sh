@@ -14,6 +14,7 @@ NC='\033[0m' # No Color
 
 # Configuration
 FLAKE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_NAME="${CONFIG_NAME:-default}"
 
 # Functions
 print_help() {
@@ -39,6 +40,7 @@ print_help() {
     echo "  $0 switch                 # Apply configuration"
     echo "  $0 update                 # Update and rebuild"
     echo "  $0 build --dry-run        # Test build without applying"
+    echo "  CONFIG_NAME=work $0 switch  # Apply a non-default configuration"
 }
 
 log() {
@@ -65,29 +67,19 @@ check_directory() {
     fi
 }
 
-# Get hostname from flake.nix
-get_hostname() {
-    if [[ -f "$FLAKE_DIR/flake.nix" ]]; then
-        grep -o 'hostName = "[^"]*"' "$FLAKE_DIR/flake.nix" | sed 's/hostName = "\(.*\)"/\1/' || echo "Mikes-MacBook-Pro"
-    else
-        echo "Mikes-MacBook-Pro"
-    fi
-}
-
 # Build configuration
 build_config() {
-    local hostname=$(get_hostname)
     local dry_run=$1
-    
-    log "Building configuration for host: $hostname"
-    
+
+    log "Building configuration: $CONFIG_NAME"
+
     cd "$FLAKE_DIR" || error "Failed to change to $FLAKE_DIR"
-    
+
     if [[ "$dry_run" == "true" ]]; then
         log "Dry run mode - showing what would be built"
-        nix build ".#darwinConfigurations.$hostname.system" --dry-run
+        nix build ".#darwinConfigurations.$CONFIG_NAME.system" --dry-run
     else
-        nix build ".#darwinConfigurations.$hostname.system"
+        nix build ".#darwinConfigurations.$CONFIG_NAME.system"
     fi
 }
 
@@ -100,7 +92,7 @@ switch_config() {
     
     cd "$FLAKE_DIR" || error "Failed to change to $FLAKE_DIR"
     
-    local cmd="sudo darwin-rebuild switch --flake $FLAKE_DIR/.#"
+    local cmd="sudo darwin-rebuild switch --flake $FLAKE_DIR#$CONFIG_NAME"
     
     if [[ "$verbose" == "true" ]]; then
         cmd="$cmd --verbose"
