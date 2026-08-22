@@ -12,7 +12,7 @@
     pkgs.argocd
     pkgs.awscli2
     pkgs.azure-cli
-    pkgs.claude-code # from the claude-code-nix overlay, not nixpkgs
+    # claude-code is installed via programs.claude-code below
     pkgs.cloudflared
     pkgs.cookiecutter
     pkgs.curl
@@ -79,6 +79,34 @@
   programs.bat = {
     enable = true;
     config.theme = "TwoDark";
+  };
+
+  programs.claude-code = {
+    enable = true;
+    package = pkgs.claude-code; # from the claude-code-nix overlay, not nixpkgs
+
+    # Declared here, fetched natively by Claude Code: these keys land in
+    # ~/.claude/settings.json, and Claude Code itself downloads/updates the
+    # plugin content through its marketplace machinery.
+    # NOTE: settings.json becomes a read-only symlink, so user-scope
+    # /plugin installs won't stick — add plugins here instead.
+    settings = {
+      # Ported from the pre-existing hand-written ~/.claude/settings.json
+      model = "claude-fable-5[1m]";
+      tui = "fullscreen";
+
+      extraKnownMarketplaces = {
+        claude-community = {
+          source = {
+            source = "github";
+            repo = "anthropics/claude-plugins-community";
+          };
+        };
+      };
+      enabledPlugins = {
+        "superpowers@claude-plugins-official" = true;
+      };
+    };
   };
 
   programs.chromium = {
