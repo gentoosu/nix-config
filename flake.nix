@@ -25,6 +25,11 @@
     # Determinate Nix (manages the Nix installation/daemon)
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
 
+    # Always-current Claude Code builds (overlay provides pkgs.claude-code).
+    # Deliberately does NOT follow our nixpkgs: it pins its own so builds
+    # match the claude-code.cachix.org binary cache.
+    claude-code.url = "github:sadjow/claude-code-nix";
+
     # Homebrew taps for declarative management
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -36,7 +41,7 @@
     };
   };
 
-  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, nix-homebrew, homebrew-core, homebrew-cask, determinate, ...}:
+  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, nix-homebrew, homebrew-core, homebrew-cask, determinate, claude-code, ...}:
     let
       system = "aarch64-darwin";
 
@@ -46,6 +51,7 @@
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
+          overlays = [claude-code.overlays.default];
         };
 
         specialArgs = { inherit username; };
@@ -58,6 +64,12 @@
             # Determinate Nix owns the Nix installation and daemon;
             # this also disables nix-darwin's built-in Nix management.
             determinateNix.enable = true;
+
+            # Binary cache for the claude-code input's builds
+            determinateNix.customSettings = {
+              extra-substituters = "https://claude-code.cachix.org";
+              extra-trusted-public-keys = "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk=";
+            };
           }
 
           mac-app-util.darwinModules.default

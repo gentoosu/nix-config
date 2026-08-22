@@ -12,7 +12,7 @@
     pkgs.argocd
     pkgs.awscli2
     pkgs.azure-cli
-    #pkgs.claude-code
+    pkgs.claude-code # from the claude-code-nix overlay, not nixpkgs
     pkgs.cloudflared
     pkgs.cookiecutter
     pkgs.curl
