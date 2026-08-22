@@ -27,11 +27,6 @@ curl -fsSL https://install.determinate.systems/nix | sh -s -- install --determin
 
 Flakes and `nix-command` are enabled out of the box — no extra configuration needed. If a Mac already has upstream Nix installed, uninstall it first (the installer will detect it and guide you).
 
-### Install Homebrew
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
 ## Quick Start
 
 ### 1. Clone this repository
