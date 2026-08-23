@@ -81,9 +81,50 @@
     config.theme = "TwoDark";
   };
 
+  # Shared MCP server definitions. Declared here rather than under
+  # programs.claude-code.mcpServers because only this module applies the
+  # `.file` secret transform (see HOMEASSISTANT_TOKEN below); claude-code's
+  # own mcpServers option would emit the file ref as a literal JSON object.
+  programs.mcp = {
+    enable = true;
+
+    servers = {
+      context7 = {
+        type = "stdio";
+        command = "npx";
+        args = ["-y" "@upstash/context7-mcp@latest"];
+      };
+
+      ha-mcp = {
+        type = "stdio";
+        command = "uvx";
+        args = ["ha-mcp"];
+        env = {
+          HOMEASSISTANT_URL = "https://hass.thehersh.net";
+          # Read from disk at launch so the token never enters the Nix store
+          HOMEASSISTANT_TOKEN.file = "/Users/${username}/.secrets/ha-token";
+        };
+      };
+
+      # Drop --read-only to allow cluster mutations
+      kubernetes-mcp-server = {
+        type = "stdio";
+        command = "npx";
+        args = ["-y" "kubernetes-mcp-server@latest" "--read-only"];
+        env = {
+          KUBECONFIG = "/Users/${username}/.kube/config";
+        };
+      };
+    };
+  };
+
   programs.claude-code = {
     enable = true;
     package = pkgs.claude-code; # from the nix-claude-code overlay, not nixpkgs
+
+    # Off by default: without this, programs.mcp.servers above never reach
+    # Claude Code (they'd only write ~/.config/mcp/mcp.json)
+    enableMcpIntegration = true;
 
     # Declared here, fetched natively by Claude Code: these keys land in
     # ~/.claude/settings.json, and Claude Code itself downloads/updates the
@@ -105,6 +146,9 @@
       };
       enabledPlugins = {
         "superpowers@claude-plugins-official" = true;
+        # Bundles Datadog's MCP server and authenticates over OAuth, so no
+        # API/app keys are needed here. Run /ddsetup once to log in.
+        "datadog@claude-plugins-official" = true;
       };
     };
   };
