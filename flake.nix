@@ -83,6 +83,11 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
+
+              # Rename pre-existing unmanaged files (e.g. a hand-written
+              # ~/.claude/settings.json) to *.hm-backup instead of aborting
+              # activation. Needed on every machine's first switch.
+              backupFileExtension = "hm-backup";
               extraSpecialArgs = {
                 inherit pwnvim username;
               };
