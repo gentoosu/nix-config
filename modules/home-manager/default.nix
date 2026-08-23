@@ -3,7 +3,9 @@
   pwnvim,
   username,
   ...
-}: {
+}: let
+  nutanix-mcp = pkgs.callPackage ./packages/nutanix-mcp.nix {};
+in {
   # Specify home-manager configs
   # DO NOT CHANGE version
   home.stateVersion = "25.05";
@@ -103,6 +105,26 @@
           HOMEASSISTANT_URL = "https://hass.thehersh.net";
           # Read from disk at launch so the token never enters the Nix store
           HOMEASSISTANT_TOKEN.file = "/Users/${username}/.secrets/ha-token";
+        };
+      };
+
+      # Built from Nutanix's git source, not PyPI — see packages/nutanix-mcp.nix.
+      # FIXME: PC_HOST/PC_USERNAME are placeholders; set to your Prism Central.
+      nutanix = {
+        type = "stdio";
+        command = "${nutanix-mcp}/bin/nutanix-mcp";
+        args = ["serve-stdio"];
+        env = {
+          PC_HOST = "pc.example.lab";
+          PC_PORT = "9440";
+          PC_USERNAME = "admin";
+          PC_PASSWORD.file = "/Users/${username}/.secrets/nutanix-pc-password";
+          # true only if Prism Central uses a self-signed certificate
+          PC_INSECURE = "false";
+          # Writable: the server caches downloaded API YAMLs here
+          ARTIFACTS_DIR = "/Users/${username}/.local/share/nutanix-mcp/artifacts";
+          # Set false to allow this server to mutate your Nutanix environment
+          READ_ONLY_MODE = "true";
         };
       };
 
