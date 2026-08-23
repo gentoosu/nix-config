@@ -83,7 +83,7 @@
 
   programs.claude-code = {
     enable = true;
-    package = pkgs.claude-code; # from the claude-code-nix overlay, not nixpkgs
+    package = pkgs.claude-code; # from the nix-claude-code overlay, not nixpkgs
 
     # Declared here, fetched natively by Claude Code: these keys land in
     # ~/.claude/settings.json, and Claude Code itself downloads/updates the
