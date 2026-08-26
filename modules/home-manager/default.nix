@@ -1,11 +1,17 @@
 {
+  config,
   pkgs,
   pwnvim,
   username,
   ...
 }: let
   nutanix-mcp = pkgs.callPackage ./packages/nutanix-mcp.nix {};
+
+  # Decrypted-secret paths, so this file never hard-codes one. See ./agenix.nix.
+  secret = name: config.age.secrets.${name}.path;
 in {
+  imports = [./agenix.nix];
+
   # Specify home-manager configs
   # DO NOT CHANGE version
   home.stateVersion = "25.05";
@@ -95,6 +101,9 @@ in {
         type = "stdio";
         command = "npx";
         args = ["-y" "@upstash/context7-mcp@latest"];
+        env = {
+          CONTEXT7_API_KEY.file = secret "context7-api-key";
+        };
       };
 
       ha-mcp = {
@@ -104,21 +113,20 @@ in {
         env = {
           HOMEASSISTANT_URL = "https://hass.thehersh.net";
           # Read from disk at launch so the token never enters the Nix store
-          HOMEASSISTANT_TOKEN.file = "/Users/${username}/.secrets/ha-token";
+          HOMEASSISTANT_TOKEN.file = secret "ha-token";
         };
       };
 
       # Built from Nutanix's git source, not PyPI — see packages/nutanix-mcp.nix.
-      # FIXME: PC_HOST/PC_USERNAME are placeholders; set to your Prism Central.
       nutanix = {
         type = "stdio";
         command = "${nutanix-mcp}/bin/nutanix-mcp";
         args = ["serve-stdio"];
         env = {
-          PC_HOST = "pc.example.lab";
+          PC_HOST.file = secret "nutanix-pc-host";
           PC_PORT = "9440";
-          PC_USERNAME = "admin";
-          PC_PASSWORD.file = "/Users/${username}/.secrets/nutanix-pc-password";
+          PC_USERNAME.file = secret "nutanix-pc-username";
+          PC_PASSWORD.file = secret "nutanix-pc-password";
           # true only if Prism Central uses a self-signed certificate
           PC_INSECURE = "false";
           # Writable: the server caches downloaded API YAMLs here

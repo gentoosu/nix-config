@@ -105,9 +105,83 @@ nix-config/
 │   ├── darwin/
 │   │   └── default.nix     # macOS system configuration
 │   └── home-manager/
-│       └── default.nix     # User environment configuration
+│       ├── default.nix     # User environment configuration
+│       ├── agenix.nix      # Encrypted secret delivery (see Secrets below)
+│       └── packages/       # Locally packaged tools not in nixpkgs
 └── README.md               # This file
 ```
+
+## Secrets
+
+MCP servers need credentials (a Home Assistant token, a Context7 API key,
+Prism Central login details). Those are managed with
+[agenix](https://github.com/ryantm/agenix) and stored encrypted in a separate
+private repo, **[nix-secrets](https://github.com/gentoosu/nix-secrets)**, which
+this flake pulls in as an input.
+
+### How the pieces fit
+
+| Where | What |
+|-------|------|
+| `nix-secrets/*.age` | The encrypted values. Safe at rest; fetched into the Nix store as ciphertext. |
+| `nix-secrets/secrets.nix` | agenix CLI recipient rules -- which pubkeys each `.age` file is encrypted to. Not a Nix module. |
+| `modules/home-manager/agenix.nix` | The `age.secrets` declarations: which secrets exist and where they get decrypted to. |
+| `modules/home-manager/default.nix` | The MCP servers, referencing secrets via `secret "name"`. |
+
+Decryption uses `~/.ssh/id_ed25519`, which must be passphrase-less so it can
+run unattended. agenix's **home-manager** module is used rather than its
+nix-darwin one, because only the home-manager module installs a `RunAtLoad`
+launchd agent -- the darwin module's `/run/agenix` ramdisk vanishes on reboot
+and does not come back until the next `darwin-rebuild switch`.
+
+Plaintext lands in `$(getconf DARWIN_USER_TEMP_DIR)/agenix.d/<generation>/`,
+which macOS clears on reboot. `~/.secrets/<name>` is a stable symlink into it,
+and that symlink is what the generated MCP wrapper scripts `cat` at launch. No
+plaintext ever enters the Nix store or a durable file in your home directory.
+
+### Editing a secret
+
+```sh
+cd ~/git/personal/nix-secrets
+agenix -e ha-token.age          # opens $EDITOR on the plaintext
+git commit -am "Rotate HA token" && git push
+
+cd ~/git/personal/nix-config
+nix flake update nix-secrets    # required -- flake.lock pins nix-secrets by revision
+./rebuild.sh switch
+```
+
+Pushing to nix-secrets alone changes nothing on the machine. The `nix flake
+update nix-secrets` step is what moves the pinned revision.
+
+### Adding a secret
+
+1. Add `"name.age".publicKeys = allKeys;` to `nix-secrets/secrets.nix`, then
+   `agenix -e name.age`.
+2. Add an `age.secrets.name` block to `modules/home-manager/agenix.nix`.
+3. Reference it as `secret "name"` in `modules/home-manager/default.nix`.
+
+### Adding a machine
+
+Append the new Mac's `~/.ssh/id_ed25519.pub` to `allKeys` in
+`nix-secrets/secrets.nix`, run `agenix -r` to re-encrypt everything, then push.
+You need an existing recipient key on hand to rekey.
+
+### Troubleshooting
+
+Decryption runs out of a launchd agent, so its output is not on your terminal:
+
+```sh
+cat ~/Library/Logs/agenix/stderr
+ls -l ~/.secrets/                 # each entry should be a symlink into $TMPDIR
+launchctl kickstart -k gui/$(id -u)/org.nix-community.home.activate-agenix
+```
+
+`nix-secrets` is fetched over SSH, so evaluation needs your SSH agent.
+`rebuild.sh` already runs `nix build` as you before escalating to `sudo
+darwin-rebuild switch`, so the input is in the store by the time root
+evaluates. Running `sudo darwin-rebuild` directly on a cold store will fail to
+fetch it.
 
 ## Customization Guide
 
