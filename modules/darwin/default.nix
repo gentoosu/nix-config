@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   username,
   ...
@@ -52,6 +53,14 @@
     #caskArgs.no_quarantine = true;
     global.brewfile = true;
     masApps = {};
+
+    # nix-homebrew owns the taps (mutableTaps = false), so nix-darwin's
+    # generated Brewfile listed none. `brew bundle`'s cleanup phase then read
+    # homebrew/cask as an unwanted tap and untapped it -- and because
+    # nix-homebrew sets HOMEBREW_NO_INSTALL_FROM_API=1, `brew untap` uninstalls
+    # every cask from the tap first. Net effect: each activation installed
+    # sublime-text and then removed it again. Listing the taps here keeps them.
+    taps = builtins.attrNames config.nix-homebrew.taps;
     brews = [
       "vault-cli"
     ];
