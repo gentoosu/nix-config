@@ -57,7 +57,6 @@
     ];
     casks = [
       "sublime-text"
-      "claude-code@latest"
     ];
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;

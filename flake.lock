@@ -505,6 +505,24 @@
         "url": "https://flakehub.com/f/DeterminateSystems/nix-src/%2A"
       }
     },
+    "nix-claude-code": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_7"
+      },
+      "locked": {
+        "lastModified": 1787443393,
+        "narHash": "sha256-N7CGtppummtEqrnJ3QK9cKSJZAGXXboGS4aUZQUumOo=",
+        "owner": "ryoppippi",
+        "repo": "nix-claude-code",
+        "rev": "352098bc288130233609505e1cf9eaed165e9d3b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ryoppippi",
+        "repo": "nix-claude-code",
+        "type": "github"
+      }
+    },
     "nix-homebrew": {
       "inputs": {
         "brew-src": "brew-src"
@@ -680,6 +698,22 @@
     },
     "nixpkgs_7": {
       "locked": {
+        "lastModified": 1786862985,
+        "narHash": "sha256-FBJRXmbGXiSUDvYEbfLYRkckayyZ6SK1UEqhCrIZ2Cs=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e5bdc4a41d4c072fe1e3787eaa0320a384741d44",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_8": {
+      "locked": {
         "lastModified": 1784525419,
         "narHash": "sha256-yocJ4I4Kd4as0UPMFs9P7laPvvA2x/Bj8EW46iW3VVM=",
         "owner": "nixos",
@@ -694,7 +728,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_8": {
+    "nixpkgs_9": {
       "locked": {
         "lastModified": 1784115452,
         "narHash": "sha256-BoYPdqk6jlKXy+DyUzyGV/CtRGfAhk2MmIgBhsemTGI=",
@@ -753,7 +787,7 @@
         "hledger-lsp": "hledger-lsp",
         "mbr": "mbr",
         "mermaid-rust-cli": "mermaid-rust-cli",
-        "nixpkgs": "nixpkgs_8",
+        "nixpkgs": "nixpkgs_9",
         "nvim-surround-wk": "nvim-surround-wk",
         "nvim-treesitter-textobjects": "nvim-treesitter-textobjects",
         "review-nvim": "review-nvim",
@@ -799,8 +833,9 @@
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
         "mac-app-util": "mac-app-util",
+        "nix-claude-code": "nix-claude-code",
         "nix-homebrew": "nix-homebrew",
-        "nixpkgs": "nixpkgs_7",
+        "nixpkgs": "nixpkgs_8",
         "pwnvim": "pwnvim"
       }
     },

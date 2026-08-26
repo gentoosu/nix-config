@@ -85,9 +85,12 @@ determinate.darwinModules.default
 
 ```nix
 determinateNix.customSettings = {
-  extra-substituters = "https://example.cachix.org";
+  extra-substituters = "https://ryoppippi.cachix.org";
+  extra-trusted-public-keys = "ryoppippi.cachix.org-1:b2LbtWNvJeL/qb1B6TYOMK+apaCps4SCbzlPRfSQIms=";
 };
 ```
+
+(This exact block is live in the config: it registers the binary cache for the [nix-claude-code](https://github.com/ryoppippi/nix-claude-code) input, which repackages Anthropic's official prebuilt Claude Code binaries as `pkgs.claude-code` via its overlay.)
 
 These are written to `/etc/nix/nix.custom.conf`, the file Determinate reserves for user overrides. Determinate Nix itself is upgraded by updating the flake lock (`nix flake update determinate`) and rebuilding — not by re-running the installer.
 

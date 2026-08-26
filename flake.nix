@@ -25,6 +25,12 @@
     # Determinate Nix (manages the Nix installation/daemon)
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
 
+    # Anthropic's official prebuilt Claude Code binaries, repackaged and
+    # refreshed hourly (overlay provides pkgs.claude-code). No nixpkgs.follows:
+    # the "build" just fetches and wraps an upstream binary, so it costs
+    # seconds even when the Cachix cache hasn't caught up to a new release.
+    nix-claude-code.url = "github:ryoppippi/nix-claude-code";
+
     # Homebrew taps for declarative management
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -36,7 +42,7 @@
     };
   };
 
-  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, nix-homebrew, homebrew-core, homebrew-cask, determinate, ...}:
+  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, nix-homebrew, homebrew-core, homebrew-cask, determinate, nix-claude-code, ...}:
     let
       system = "aarch64-darwin";
 
@@ -46,6 +52,7 @@
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
+          overlays = [nix-claude-code.overlays.default];
         };
 
         specialArgs = { inherit username; };
@@ -58,6 +65,12 @@
             # Determinate Nix owns the Nix installation and daemon;
             # this also disables nix-darwin's built-in Nix management.
             determinateNix.enable = true;
+
+            # Binary cache for the nix-claude-code input's builds
+            determinateNix.customSettings = {
+              extra-substituters = "https://ryoppippi.cachix.org";
+              extra-trusted-public-keys = "ryoppippi.cachix.org-1:b2LbtWNvJeL/qb1B6TYOMK+apaCps4SCbzlPRfSQIms=";
+            };
           }
 
           mac-app-util.darwinModules.default
@@ -70,6 +83,11 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
+
+              # Rename pre-existing unmanaged files (e.g. a hand-written
+              # ~/.claude/settings.json) to *.hm-backup instead of aborting
+              # activation. Needed on every machine's first switch.
+              backupFileExtension = "hm-backup";
               extraSpecialArgs = {
                 inherit pwnvim username;
               };
