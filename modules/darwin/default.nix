@@ -38,12 +38,25 @@
     "/Applications/Nix Apps/Spotify.app"
     "/Applications/Sublime Text.app"
     "/Users/${username}/Applications/Home Manager Apps/Zed.app"
+    "/Users/${username}/Applications/Home Manager Apps/Visual Studio Code.app"
     "/Applications/Nix Apps/Slack.app"
     "/Users/${username}/Applications/Home Manager Apps/Alacritty.app"
   ];
   system.defaults.NSGlobalDomain.InitialKeyRepeat = 15;
   system.defaults.NSGlobalDomain.KeyRepeat = 2;
   system.defaults.NSGlobalDomain."com.apple.swipescrolldirection" = false;
+
+  # Spotlight indexing on the data volume can end up switched off (a stray
+  # `mdutil -i off`, a Spotlight Privacy entry, or a migration). When it is,
+  # nothing under /Applications or ~/Applications is searchable -- including
+  # the mac-app-util trampolines that make Home Manager apps visible at all.
+  # Re-assert it here; `mdutil -i on` is a no-op when already enabled.
+  system.activationScripts.postActivation.text = ''
+    if ! /usr/bin/mdutil -s /System/Volumes/Data | grep -q "Indexing enabled"; then
+      echo "enabling Spotlight indexing on /System/Volumes/Data..." >&2
+      /usr/bin/mdutil -i on /System/Volumes/Data || true
+    fi
+  '';
 
   ### DO NOT MODIFY, for backwards compatibility
   system.stateVersion = 6;
