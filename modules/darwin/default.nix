@@ -38,6 +38,7 @@
     "/Applications/Nix Apps/Spotify.app"
     "/Applications/Sublime Text.app"
     "/Users/${username}/Applications/Home Manager Apps/Zed.app"
+    "/Users/${username}/Applications/Home Manager Apps/Visual Studio Code.app"
     "/Applications/Nix Apps/Slack.app"
     "/Users/${username}/Applications/Home Manager Apps/Alacritty.app"
   ];
