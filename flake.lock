@@ -1,5 +1,32 @@
 {
   "nodes": {
+    "agenix": {
+      "inputs": {
+        "darwin": [
+          "darwin"
+        ],
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1770165109,
+        "narHash": "sha256-9VnK6Oqai65puVJ4WYtCTvlJeXxMzAp/69HhQuTdl/I=",
+        "owner": "ryantm",
+        "repo": "agenix",
+        "rev": "b027ee29d959fda4b60b57566d64c98a202e0feb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ryantm",
+        "repo": "agenix",
+        "type": "github"
+      }
+    },
     "agentic-nvim": {
       "flake": false,
       "locked": {
@@ -37,7 +64,7 @@
       "inputs": {
         "flake-parts": "flake-parts_2",
         "nixpkgs": "nixpkgs_3",
-        "systems": "systems",
+        "systems": "systems_2",
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
@@ -294,7 +321,7 @@
     },
     "flake-utils_2": {
       "inputs": {
-        "systems": "systems_3"
+        "systems": "systems_4"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -312,7 +339,7 @@
     },
     "flake-utils_3": {
       "inputs": {
-        "systems": "systems_4"
+        "systems": "systems_5"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -425,7 +452,7 @@
         "flake-compat": "flake-compat_2",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs_5",
-        "systems": "systems_2",
+        "systems": "systems_3",
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
@@ -544,6 +571,24 @@
         "owner": "zhaofengli",
         "repo": "nix-homebrew",
         "type": "github"
+      }
+    },
+    "nix-secrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787948868,
+        "narHash": "sha256-pg/HsDhDtf95J+DuXKRcQL7ZTG40DLNi4V+ibLHftOk=",
+        "ref": "main",
+        "rev": "aed36529485affaaf966ffae3ba0414108e7296f",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/gentoosu/nix-secrets.git"
+      },
+      "original": {
+        "ref": "main",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/gentoosu/nix-secrets.git"
       }
     },
     "nixpkgs": {
@@ -815,6 +860,7 @@
     },
     "root": {
       "inputs": {
+        "agenix": "agenix",
         "darwin": "darwin",
         "determinate": "determinate",
         "home-manager": "home-manager",
@@ -823,6 +869,7 @@
         "mac-app-util": "mac-app-util",
         "nix-claude-code": "nix-claude-code",
         "nix-homebrew": "nix-homebrew",
+        "nix-secrets": "nix-secrets",
         "nixpkgs": "nixpkgs_8",
         "pwnvim": "pwnvim"
       }
@@ -898,6 +945,21 @@
     },
     "systems_2": {
       "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_3": {
+      "locked": {
         "lastModified": 1689347925,
         "narHash": "sha256-ozenz5bFe1UUqOn7f60HRmgc01BgTGIKZ4Xl+HbocGQ=",
         "owner": "nix-systems",
@@ -911,7 +973,7 @@
         "type": "github"
       }
     },
-    "systems_3": {
+    "systems_4": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -926,7 +988,7 @@
         "type": "github"
       }
     },
-    "systems_4": {
+    "systems_5": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",

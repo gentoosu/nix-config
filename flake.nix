@@ -31,6 +31,23 @@
     # seconds even when the Cachix cache hasn't caught up to a new release.
     nix-claude-code.url = "github:ryoppippi/nix-claude-code";
 
+    # Age-encrypted secret management
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.darwin.follows = "darwin";
+      inputs.home-manager.follows = "home-manager";
+    };
+
+    # Private store of *.age files consumed by modules/home-manager/agenix.nix.
+    # Not a flake, just a directory of encrypted blobs. Fetched over SSH, so
+    # `nix build` must run as your user (rebuild.sh already does that before it
+    # escalates to `sudo darwin-rebuild switch`, which then reuses flake.lock).
+    nix-secrets = {
+      url = "git+ssh://git@github.com/gentoosu/nix-secrets.git?ref=main&shallow=1";
+      flake = false;
+    };
+
     # Homebrew taps for declarative management
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -42,7 +59,7 @@
     };
   };
 
-  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, nix-homebrew, homebrew-core, homebrew-cask, determinate, nix-claude-code, ...}:
+  outputs = inputs@{nixpkgs, home-manager, darwin, pwnvim, mac-app-util, nix-homebrew, homebrew-core, homebrew-cask, determinate, nix-claude-code, agenix, nix-secrets, ...}:
     let
       system = "aarch64-darwin";
 
@@ -89,7 +106,7 @@
               # activation. Needed on every machine's first switch.
               backupFileExtension = "hm-backup";
               extraSpecialArgs = {
-                inherit pwnvim username;
+                inherit pwnvim username agenix nix-secrets;
               };
               users.${username}.imports = [
                 ./modules/home-manager
