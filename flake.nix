@@ -111,6 +111,10 @@
               users.${username}.imports = [
                 ./modules/home-manager
               ];
+
+              sharedModules = [
+                mac-app-util.homeManagerModules.default
+              ];
             };
           }
 

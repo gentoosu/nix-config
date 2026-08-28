@@ -54,6 +54,7 @@ in {
     pkgs.localstack
     pkgs.meslo-lgs-nf
     pkgs.nmap
+    pkgs.nodejs
     pkgs.opentofu
     pkgs.postgresql
     #pkgs.rectangle
@@ -99,7 +100,7 @@ in {
     servers = {
       context7 = {
         type = "stdio";
-        command = "npx";
+        command = "${pkgs.nodejs}/bin/npx";
         args = ["-y" "@upstash/context7-mcp@latest"];
         env = {
           CONTEXT7_API_KEY.file = secret "context7-api-key";
@@ -139,7 +140,7 @@ in {
       # Drop --read-only to allow cluster mutations
       kubernetes-mcp-server = {
         type = "stdio";
-        command = "npx";
+        command = "${pkgs.nodejs}/bin/npx";
         args = ["-y" "kubernetes-mcp-server@latest" "--read-only"];
         env = {
           KUBECONFIG = "/Users/${username}/.kube/config";
@@ -163,7 +164,7 @@ in {
     # /plugin installs won't stick — add plugins here instead.
     settings = {
       # Ported from the pre-existing hand-written ~/.claude/settings.json
-      model = "claude-fable-5[1m]";
+      model = "claude-opus-5[1m]";
       tui = "fullscreen";
 
       extraKnownMarketplaces = {
@@ -243,22 +244,25 @@ in {
     ];
   };
 
-  # programs.vscode = {
-  #   enable = true;
-  #   profiles.default.extensions = with pkgs.vscode-extensions; [
-  #     bbenoist.nix
-  #     brettm12345.nixfmt-vscode
-  #     eamodio.gitlens
-  #     hashicorp.terraform
-  #     ms-python.vscode-pylance
-  #     ms-python.python
-  #     hashicorp.hcl
-  #     hashicorp.terraform
-  #     wholroyd.jinja
-  #     redhat.vscode-yaml
-  #     ms-kubernetes-tools.vscode-kubernetes-tools
-  #   ];
-  # };
+  programs.vscode = {
+    enable = true;
+    profiles.default.extensions = with pkgs.vscode-extensions; [
+      bbenoist.nix
+      brettm12345.nixfmt-vscode
+      eamodio.gitlens
+      hashicorp.terraform
+      ms-python.vscode-pylance
+      ms-python.python
+      hashicorp.hcl
+      hashicorp.terraform
+      wholroyd.jinja
+      redhat.vscode-yaml
+      ms-kubernetes-tools.vscode-kubernetes-tools
+    ];
+    profiles.default.userSettings = {
+      "workbench.colorTheme" = "Solarized Dark";
+    };
+  };
 
   programs.zed-editor = import ../../modules/darwin/programs/zed-editor {
     inherit pkgs;
